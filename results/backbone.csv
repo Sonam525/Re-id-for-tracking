@@ -1,0 +1,5 @@
+backbone,parameters_M,per_crop_rank1_pct,reid_5min_windows_pct,night_gap_0422_0423
+ViT-S/16,22,88.0,98.8,4 of 4
+ViT-B/16,86,86.2,98.6,4 of 4
+ViT-L/16,303,87.1,98.9,4 of 4
+ViT-7B/16,6716,85.5,98.6,4 of 4

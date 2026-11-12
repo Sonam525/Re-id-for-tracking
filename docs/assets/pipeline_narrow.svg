@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 908" role="img" aria-label="Pipeline as seven steps from top to bottom">
+
+<style>
+  text { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; fill: #24292f; }
+  .t { font-size: 14px; font-weight: 600; }
+  .d { font-size: 12px; fill: #57606a; }
+  .h { font-size: 12px; font-weight: 600; letter-spacing: .04em; fill: #57606a; }
+  .box { fill: #ffffff; stroke: #d0d7de; stroke-width: 1; }
+  .box.key { fill: #e8f3ee; stroke: #2f7d5b; }
+  .box.input { fill: #fff8e8; stroke: #c98500; stroke-dasharray: 4 3; }
+  .band { fill: #f6f8fa; stroke: none; }
+  .edge { stroke: #57606a; stroke-width: 1.5; fill: none; }
+  .edge.dash { stroke-dasharray: 4 3; }
+  .arrow { fill: #57606a; }
+  .grid { stroke: #d8dee4; stroke-width: 1; }
+  .tr { fill: #2a78d6; } .va { fill: #eb6834; } .tn { fill: #1baf7a; } .te { fill: #eda100; }
+  @media (prefers-color-scheme: dark) {
+    text { fill: #e6edf3; }
+    .d, .h { fill: #9da7b3; }
+    .box { fill: #161b22; stroke: #3d444d; }
+    .box.key { fill: #12261e; stroke: #4aa37c; }
+    .box.input { fill: #2a2110; stroke: #c98500; }
+    .band { fill: #11161c; }
+    .edge { stroke: #9da7b3; } .arrow { fill: #9da7b3; }
+    .grid { stroke: #30363d; }
+    .tr { fill: #3987e5; } .va { fill: #d95926; } .tn { fill: #199e70; } .te { fill: #c98500; }
+  }
+</style>
+<text class="h" x="20" y="24">PER FRAME (1-3), THEN OFFLINE (4-7)</text>
+<rect class="box " x="20" y="40" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="63">1  Overhead video</text>
+<text class="d" x="32" y="83">2304x1296, one camera,</text>
+<text class="d" x="32" y="99">decoded to 5 fps</text>
+<rect class="box key" x="20" y="164" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="187">2  Tracker</text>
+<text class="d" x="32" y="207">SAM 3 with a distilled</text>
+<text class="d" x="32" y="223">TinyViT student. RF-DETR</text>
+<text class="d" x="32" y="239">detector re-seeds it</text>
+<path class="edge" d="M170 140 L170 156"/><polygon class="arrow" points="170,164 166,156 174,156"/>
+<rect class="box " x="20" y="288" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="311">3  Anonymous segments</text>
+<text class="d" x="32" y="331">One RLE mask per frame.</text>
+<text class="d" x="32" y="347">No identity yet</text>
+<path class="edge" d="M170 264 L170 280"/><polygon class="arrow" points="170,288 166,280 174,280"/>
+<rect class="box " x="20" y="412" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="435">4  Crops, embeddings</text>
+<text class="d" x="32" y="455">Masked crops every 15 s,</text>
+<text class="d" x="32" y="471">DINOv3 ViT-S/16</text>
+<path class="edge" d="M170 388 L170 404"/><polygon class="arrow" points="170,412 166,404 174,404"/>
+<rect class="box key" x="20" y="536" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="559">5  Identity layer</text>
+<text class="d" x="32" y="579">3-min windows, Hungarian</text>
+<text class="d" x="32" y="595">match over runs. Says</text>
+<text class="d" x="32" y="611">'?' when unsure</text>
+<path class="edge" d="M170 512 L170 528"/><polygon class="arrow" points="170,536 166,528 174,528"/>
+<rect class="box " x="20" y="660" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="683">6  Colour filter</text>
+<text class="d" x="32" y="703">Hides tracks that are</text>
+<text class="d" x="32" y="719">not a black and white</text>
+<text class="d" x="32" y="735">calf</text>
+<path class="edge" d="M170 636 L170 652"/><polygon class="arrow" points="170,660 166,652 174,652"/>
+<rect class="box " x="20" y="784" width="300" height="100" rx="8"/>
+<text class="t" x="32" y="807">7  Mask refinement</text>
+<text class="d" x="32" y="827">Detector repairs mask</text>
+<text class="d" x="32" y="843">fragments. Identity</text>
+<text class="d" x="32" y="859">does not change</text>
+<path class="edge" d="M170 760 L170 776"/><polygon class="arrow" points="170,784 166,776 174,776"/>
+</svg>

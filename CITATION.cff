@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "The paper is in preparation. Until it is out, please cite this repository."
+title: "Which calf is which, across a week"
+type: software
+authors:
+  - family-names: "Yang"
+    given-names: "Haiyu"
+repository-code: "https://github.com/Sonam525/Re-id-for-tracking"
+url: "https://sonam525.github.io/Re-id-for-tracking/"
+license: MIT

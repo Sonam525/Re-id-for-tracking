@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calf identity across a week</title>
+<meta name="description" content="Four dairy calves tracked for a week with one overhead camera, each given its identity back after every night.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Calf identity across a week">
+<meta property="og:description" content="Four dairy calves tracked for a week with one overhead camera, each given its identity back after every night.">
+<meta property="og:image" content="https://sonam525.github.io/Re-id-for-tracking/media/refine_poster.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='13' height='13' rx='3' fill='%23d9443f'/%3E%3Crect x='17' y='2' width='13' height='13' rx='3' fill='%233fb950'/%3E%3Crect x='2' y='17' width='13' height='13' rx='3' fill='%232f81d7'/%3E%3Crect x='17' y='17' width='13' height='13' rx='3' fill='%23d4b106'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#overview">Calf identity</a>
+  <nav aria-label="Sections">
+    <a href="#overview">Overview</a>
+    <a href="#week">The week</a>
+    <a href="#pipeline">How it works</a>
+    <a href="#results">Results</a>
+    <a href="#videos">Videos</a>
+    <a href="#data">Masks</a>
+    <a href="#cite">Citation</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="overview" class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Paper in preparation</p>
+    <h1>Which calf is which, across a week</h1>
+    <p class="lead">Records for each animal need every animal to keep its name from one day to the next. We track four dairy calves with one overhead camera for seven days, and give each calf its identity back every morning after the camera has been off all night.</p>
+    <p class="links">
+      <a class="button" href="https://github.com/Sonam525/Re-id-for-tracking">Code</a>
+      <a class="button ghost" data-dataset-link href="#data">Masks</a>
+      <a class="button ghost" href="https://huggingface.co/Sonam5/Calf-Identity-Tracking-Weights">Weights</a>
+      <a class="button ghost" href="https://github.com/Sonam525/FarmSAM">Tracker (FarmSAM)</a>
+    </p>
+  </div>
+  <figure class="hero-fig">
+    <img src="media/pen_after_refinement.jpg" width="960" height="546" alt="Overhead view of a straw pen with four calves, each covered by a coloured mask with a number.">
+    <figcaption>The pen on 2024-04-22 at 17:18. Each colour is one calf.</figcaption>
+  </figure>
+</section>
+
+<section class="tiles" aria-label="Headline results">
+  <div class="tile"><b>7 days</b><span>four calves, one identity each</span></div>
+  <div class="tile"><b>6 of 6</b><span>nights with every calf recovered</span></div>
+  <div class="tile"><b>99.27 %</b><span>of labelled time correct on the held-out day</span></div>
+  <div class="tile"><b>22 M</b><span>parameters in the embedding model, as good as 6.7 B</span></div>
+</section>
+
+<section id="week">
+  <h2>The week</h2>
+  <p>A tracker holds an identity only while it can follow an animal from frame to frame. On this farm that chain breaks every night.</p>
+  <ul class="plain">
+    <li><strong>The camera stops every night,</strong> from about 23:50 to 05:45. The calves wake up somewhere else, often in dim infrared light.</li>
+    <li><strong>The calves look alike.</strong> All four are black and white, seen from above.</li>
+    <li><strong>Training and test are days apart.</strong> The verified examples come from 04-18 and 04-19, and the week starts 60 hours later.</li>
+  </ul>
+  <p>So identity has to be rebuilt from appearance six times, without one wrong morning spoiling the rest of the week.</p>
+  <figure class="wide">
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/timeline_narrow.svg">
+      <img src="assets/timeline.svg" width="500" height="438" alt="Timeline of nine recording days by hour. Each day has a recording bar from about 05:45 to 23:50, with a gap each night. 04-20 and 04-21 have no recording. Labels give each day's role.">
+    </picture>
+    <figcaption>What was recorded and what each day is used for.</figcaption>
+  </figure>
+</section>
+
+<section id="pipeline">
+  <h2>How it works</h2>
+  <picture class="wide">
+    <source media="(max-width: 640px)" srcset="assets/pipeline_narrow.svg">
+    <img src="assets/pipeline.svg" width="980" height="352" alt="Pipeline from overhead video through the tracker to anonymous segments, then crops and embeddings, then the offline identity layer with an anchor pool, a colour filter and mask refinement.">
+  </picture>
+  <div class="columns">
+    <div>
+      <h3>Track first, name later</h3>
+      <p>SAM 3 with a distilled backbone from <a href="https://github.com/Sonam525/FarmSAM">FarmSAM</a> follows the calves and writes anonymous segments, one mask per calf per frame. An RF-DETR detector re-seeds it when a calf is lost. The tracker never decides who a calf is.</p>
+    </div>
+    <div>
+      <h3>Identity in short windows</h3>
+      <p>Masked crops are embedded with DINOv3 ViT-S/16. Every 3 minutes the identity layer compares them with verified crops from the training days and solves one joint assignment for the four calves. When the evidence is thin it writes "?" rather than guess.</p>
+    </div>
+    <div>
+      <h3>Clean masks</h3>
+      <p>Where a mask breaks into fragments, the detector repairs it. A colour check sets aside anything that is clearly not a black and white calf. Neither step changes identity.</p>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <h2>Results</h2>
+  <h3>Identity</h3>
+  <p>Times are calf-minutes: one calf for one minute. 04-22 and 04-23 were used for validation; 04-24 to 04-28 were held out.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Day</th><th class="n">Labelled time correct</th><th class="n">Trusted calf-minutes correct</th><th class="n">Left as "?"</th></tr></thead>
+    <tbody>
+      <tr class="strong"><td>04-24, held-out test</td><td class="n">99.27 %</td><td class="n">93.0 % of 3,825.5</td><td class="n">5.2 %</td></tr>
+      <tr><td>04-22, validation</td><td class="n">99.97 %</td><td class="n">98.45 % of 2,557.9</td><td class="n">0.02 %</td></tr>
+      <tr><td>04-23, validation</td><td class="n">99.89 %</td><td class="n">98.1 % of 4,127.5</td><td class="n">0.09 %</td></tr>
+    </tbody>
+  </table></div>
+  <p>A veterinarian watched 04-25 to 04-28 at 50× speed and found no wrongly assigned identity, apart from one calf that took about 20 minutes after dawn on 04-28 to get its correct label.</p>
+
+  <h3>Every night</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Night</th><th>Result</th><th>Checked against</th></tr></thead>
+    <tbody>
+      <tr><td>04-22 to 04-23</td><td>4 of 4 calves</td><td>Verified identity chain</td></tr>
+      <tr><td>04-23 to 04-24</td><td>4 of 4 calves</td><td>Expert notes</td></tr>
+      <tr><td>04-24 to 04-25</td><td>Correct</td><td>Expert review</td></tr>
+      <tr><td>04-25 to 04-26</td><td>Correct</td><td>Expert review</td></tr>
+      <tr><td>04-26 to 04-27</td><td>Correct</td><td>Expert review</td></tr>
+      <tr><td>04-27 to 04-28</td><td>Correct from 06:00</td><td>Expert review</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Mask refinement</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Days</th><th class="n">Fragmented masks, slot-hours before</th><th class="n">After</th></tr></thead>
+    <tbody>
+      <tr><td>04-22</td><td class="n">2.81</td><td class="n">0.37</td></tr>
+      <tr><td>04-23</td><td class="n">3.87</td><td class="n">1.52</td></tr>
+      <tr><td>04-24 to 04-28</td><td class="n">24.56</td><td class="n">3.90</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">On 04-24 to 04-28 every fragment episode of 10 minutes or more was repaired (19 before, 0 after).</p>
+
+  <h3>A small embedding model is enough</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>DINOv3 backbone</th><th class="n">Parameters</th><th class="n">Per-crop rank-1</th><th class="n">Re-ID in 5-min windows</th></tr></thead>
+    <tbody>
+      <tr class="strong"><td>ViT-S/16</td><td class="n">22 M</td><td class="n">88.0 %</td><td class="n">98.8 %</td></tr>
+      <tr><td>ViT-B/16</td><td class="n">86 M</td><td class="n">86.2 %</td><td class="n">98.6 %</td></tr>
+      <tr><td>ViT-L/16</td><td class="n">303 M</td><td class="n">87.1 %</td><td class="n">98.9 %</td></tr>
+      <tr><td>ViT-7B/16</td><td class="n">6,716 M</td><td class="n">85.5 %</td><td class="n">98.6 %</td></tr>
+    </tbody>
+  </table></div>
+
+  <p class="note"><strong>Scope.</strong> One pen, four black and white calves, one camera and one week. Identity is decided offline, and tracking runs at about 3.75 fps on an A10 GPU. Only 04-24 has numeric identity ground truth, and no frame has pixel-level mask ground truth. The tables are also <a href="https://github.com/Sonam525/Re-id-for-tracking/tree/main/results">in the repository as CSV</a>.</p>
+</section>
+
+<section id="videos">
+  <h2>Videos</h2>
+  <p>Videos run at 50× speed, one frame every 2 s of real time, with the clock in each frame.</p>
+
+  <h3>The week, day by day</h3>
+  <p>One video per day, from the first light after the night. Each colour is one calf. While people are in the pen, the picture is mosaicked, and the feed alley beyond the rail is mosaicked throughout.</p>
+  <div class="daypick" id="daypick" role="group" aria-label="Day"></div>
+  <figure class="wide video week">
+    <video id="weekvideo" controls playsinline preload="none" poster="media/week/20240424.jpg" width="640" height="360" aria-label="Calf identities on 2024-04-24, 50 times speed">
+      <source src="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240424_identities.mp4" type="video/mp4">
+    </video>
+    <figcaption id="week-cap">04-24, held-out test, from 05:48. Mosaicked for 91 minutes in all, around the times people were in the pen.</figcaption>
+  </figure>
+
+  <h3>Mask refinement</h3>
+  <figure class="wide video">
+    <video id="refine" controls playsinline preload="none" poster="media/refine_poster.jpg" width="1280" height="392" aria-label="Before and after mask refinement, 2024-04-22, 16:41 to 17:48">
+      <source src="media/20240422_1641-1748_refine_side_by_side.mp4" type="video/mp4">
+    </video>
+    <figcaption>04-22, 16:41 to 17:48: tracked masks before (left, or top on a phone) and after (right, or bottom) refinement. Each colour is one calf. At 17:18 the green mask covers part of its calf before and the whole calf after.</figcaption>
+  </figure>
+
+  <h3>Teacher and student</h3>
+  <figure class="wide video">
+    <video id="pair" controls playsinline preload="none" poster="media/teacher_student_poster.jpg" width="1280" height="392" aria-label="The tracker with the SAM 3 backbone and with the distilled student backbone, side by side, 2024-04-23, 18:00 to midnight">
+      <source src="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/20240423_1800-2400_teacher_student.mp4" type="video/mp4">
+    </video>
+    <figcaption>04-23, 18:00 to midnight, from daylight into infrared night, frame for frame. Left (top on a phone): the tracker with SAM 3's own backbone. Right (bottom): the same tracker with the distilled student backbone, run with its mask repair on. Here the colours are tracker slots, not calves. From about 23:30 the teacher loses calves; the student keeps all four.</figcaption>
+  </figure>
+</section>
+
+<section id="data">
+  <h2>Masks</h2>
+  <p>Per-frame masks are on <a data-dataset-link href="#data">Hugging Face</a>, one gzipped JSON file per video clip, at 5 fps.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Set</th><th>Days</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td>Generated</td><td>04-22 to 04-28</td><td>Final refined masks, with rules that map tracker slots to calves over the day.</td></tr>
+      <tr><td>Verified</td><td>04-18, 04-19, 04-22, 04-23, 04-24</td><td>Masks whose identity chain people checked.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Reading a mask</h3>
+<pre><code>import gzip, json
+from pycocotools import mask as mask_utils
+
+with gzip.open("masks_FarmA_R1_ch01-20240425-054428-061038.json.gz", "rt") as f:
+    clip = json.load(f)
+
+frame = clip["frames"][0]              # keys 0-3 are tracker slots, not calves
+rle = frame["masks"]["0"]              # None if that slot has no mask
+h, w = rle["size"]
+binary = mask_utils.decode(mask_utils.frPyObjects(rle, h, w))   # h x w, uint8</code></pre>
+  <p>Slots become calves through <code>relabel_week_&lt;day&gt;.json</code>. See the <a data-dataset-link href="#data">dataset card</a> for the layout, and <a href="https://github.com/Sonam525/Re-id-for-tracking/blob/main/examples/decode_masks.py">examples/decode_masks.py</a> for a decoder that needs only NumPy.</p>
+  <p>The video is camera <code>FarmA_R1</code> of the <a href="https://huggingface.co/datasets/Sonam5/Calf-Play-Behavior-Dataset">Calf Play Behavior Dataset</a> (doi:10.57967/hf/10912), and each mask file carries the name of its clip there.</p>
+  <h3>Licences</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Item</th><th>Terms</th></tr></thead>
+    <tbody>
+      <tr><td>Code</td><td>MIT</td></tr>
+      <tr><td>Masks and labels</td><td>SAM License, because they come from SAM 3 and a student distilled from it</td></tr>
+      <tr><td>SAM 3</td><td>SAM License, gated</td></tr>
+      <tr><td>Calf student and calf detector</td><td>SAM License, at <a href="https://huggingface.co/Sonam5/Calf-Identity-Tracking-Weights">Calf-Identity-Tracking-Weights</a></td></tr>
+      <tr><td>DINOv3 ViT-S/16</td><td>DINOv3 License</td></tr>
+      <tr><td>RF-DETR (library)</td><td>Apache-2.0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="cite">
+  <h2>Citation</h2>
+  <p>The paper is in preparation. Until it is out, please cite this repository and the two works below.</p>
+<pre><code>@misc{calf_identity_week,
+  title  = {Which calf is which, across a week},
+  author = {Yang, Haiyu},
+  year   = {2026},
+  url    = {https://github.com/Sonam525/Re-id-for-tracking}
+}</code></pre>
+  <ul class="plain">
+    <li>Distillation paper: arXiv:2604.27128. Code at <a href="https://github.com/Sonam525/FarmSAM">FarmSAM</a>.</li>
+    <li>Video dataset: doi:10.57967/hf/10912.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <p>Static page. No tracking, no cookies. The dataset documentation states that the observational study was approved by the Animal Welfare Body of Utrecht University (approval 10818-2024-02).</p>
+</footer>
+
+<script src="site.js?v=3"></script>
+</body>
+</html>

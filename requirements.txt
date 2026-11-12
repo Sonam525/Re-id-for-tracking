@@ -1,0 +1,2 @@
+# For examples/decode_masks.py only. code/ ran on Databricks; each script installs its own pins.
+numpy

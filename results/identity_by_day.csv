@@ -1,0 +1,5 @@
+day,role,stratum,trusted_min,correct_min,pct_of_trusted,pct_of_labelled,wrong_flagged_min,wrong_silent_min,question_mark_min,no_mask_min
+20240422,validation,main,2557.9,2518.4,98.45,99.967,0,0.83,0.63,38.1
+20240423,validation,main,4127.5,4049.0,98.1,99.885,0.54,4.14,3.89,69.9
+20240423,validation,late 23:30 to 24:00,86.1,55.1,,93.311,3.95,0,3.02,24.1
+20240424,test,main,3825.5,3558.0,93.0,99.27,13.44,12.63,198.7,42.7
