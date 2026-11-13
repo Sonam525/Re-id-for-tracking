@@ -78,7 +78,7 @@ The masks are at [Sonam5/Calf-Identity-Tracking-Masks](https://huggingface.co/da
 | Set | Days |
 |:---|:---|
 | Generated, final refined masks with identities | 04-22 to 04-28 |
-| Verified, identity chains checked by people | 04-18, 04-19, 04-22, 04-23, 04-24 |
+| Verified, an earlier pass with identity labels checked or reviewed by people (details on the dataset card) | 04-18, 04-19, 04-22, 04-23, 04-24 |
 
 Read one with NumPy only:
 
