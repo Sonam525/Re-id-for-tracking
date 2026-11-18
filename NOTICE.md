@@ -23,4 +23,4 @@ The masks were made with SAM 3 and a student distilled from it, so we release th
 
 ## Data shown
 
-The clip and stills in `docs/media/` come from the calf dataset, camera FarmA_R1 (doi:10.57967/hf/10912, CC0), with overlays added. The overlays are masks, so the SAM License applies to them. It does not change the terms of the video.
+The clip and stills in `docs/media/` come from the calf dataset, camera FarmA_R1 (doi:10.57967/hf/11689, CC0), with overlays added. The overlays are masks, so the SAM License applies to them. It does not change the terms of the video.

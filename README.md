@@ -86,7 +86,7 @@ Read one with NumPy only:
 python examples/decode_masks.py masks_FarmA_R1_ch01-20240425-054428-061038.json.gz
 ```
 
-The video is camera `FarmA_R1` of the [Calf Play Behavior Dataset](https://huggingface.co/datasets/Sonam5/Calf-Play-Behavior-Dataset) (doi:10.57967/hf/10912), and each mask file carries the name of its clip there. The video files of this camera follow once people who appear in the pen are masked.
+The video is camera `FarmA_R1` of the [Calf Play Behavior Dataset](https://huggingface.co/datasets/Sonam5/Calf-Play-Behavior-Dataset) (doi:[10.57967/hf/11689](https://doi.org/10.57967/hf/11689)), described in its dataset paper ([arXiv:2611.21706](https://arxiv.org/abs/2611.21706)). Each mask file carries the name of its clip there. Since version 1.2 of that dataset its videos are public, with the people in the barn covered by a mosaic.
 
 ## Code
 
@@ -115,4 +115,4 @@ Licence holder: Haiyu Yang. See [`NOTICE.md`](NOTICE.md).
 
 ## Citation
 
-The paper is in preparation. Until then, please cite this repository ([`CITATION.cff`](CITATION.cff)), the distillation paper (arXiv:2604.27128) and the video dataset (doi:10.57967/hf/10912).
+The paper is in preparation. Until then, please cite this repository ([`CITATION.cff`](CITATION.cff)), the distillation paper (arXiv:2604.27128), the video dataset (doi:10.57967/hf/11689) and its dataset paper (arXiv:2611.21706).

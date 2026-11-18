@@ -199,7 +199,7 @@ rle = frame["masks"]["0"]              # None if that slot has no mask
 h, w = rle["size"]
 binary = mask_utils.decode(mask_utils.frPyObjects(rle, h, w))   # h x w, uint8</code></pre>
   <p>Slots become calves through <code>relabel_week_&lt;day&gt;.json</code>. See the <a data-dataset-link href="#data">dataset card</a> for the layout, and <a href="https://github.com/Sonam525/Re-id-for-tracking/blob/main/examples/decode_masks.py">examples/decode_masks.py</a> for a decoder that needs only NumPy.</p>
-  <p>The video is camera <code>FarmA_R1</code> of the <a href="https://huggingface.co/datasets/Sonam5/Calf-Play-Behavior-Dataset">Calf Play Behavior Dataset</a> (doi:10.57967/hf/10912), and each mask file carries the name of its clip there.</p>
+  <p>The video is camera <code>FarmA_R1</code> of the <a href="https://huggingface.co/datasets/Sonam5/Calf-Play-Behavior-Dataset">Calf Play Behavior Dataset</a> (doi:<a href="https://doi.org/10.57967/hf/11689">10.57967/hf/11689</a>), described in its dataset paper (<a href="https://arxiv.org/abs/2611.21706">arXiv:2611.21706</a>). Each mask file carries the name of its clip there.</p>
   <h3>Licences</h3>
   <div class="scroll"><table>
     <thead><tr><th>Item</th><th>Terms</th></tr></thead>
@@ -216,7 +216,7 @@ binary = mask_utils.decode(mask_utils.frPyObjects(rle, h, w))   # h x w, uint8</
 
 <section id="cite">
   <h2>Citation</h2>
-  <p>The paper is in preparation. Until it is out, please cite this repository and the two works below.</p>
+  <p>The paper is in preparation. Until it is out, please cite this repository and the works below.</p>
 <pre><code>@misc{calf_identity_week,
   title  = {Which calf is which, across a week},
   author = {Yang, Haiyu},
@@ -225,7 +225,7 @@ binary = mask_utils.decode(mask_utils.frPyObjects(rle, h, w))   # h x w, uint8</
 }</code></pre>
   <ul class="plain">
     <li>Distillation paper: arXiv:2604.27128. Code at <a href="https://github.com/Sonam525/FarmSAM">FarmSAM</a>.</li>
-    <li>Video dataset: doi:10.57967/hf/10912.</li>
+    <li>Video dataset: doi:<a href="https://doi.org/10.57967/hf/11689">10.57967/hf/11689</a>. Dataset paper: <a href="https://arxiv.org/abs/2611.21706">arXiv:2611.21706</a>.</li>
   </ul>
 </section>
 
