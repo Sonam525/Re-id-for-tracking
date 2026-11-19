@@ -2,7 +2,7 @@
   <img src="figures/banner.svg" alt="A farm at sunrise. A camera on a pole watches four black and white calves, each followed by a coloured tracking outline." width="100%">
 </p>
 
-<h1 align="center">Resilient re-ID framework for trackers with over 99 % accuracy</h1>
+<h1 align="center">Re-ID for consistent tracking</h1>
 
 <p align="center"><i>A lightweight re-identification safety net under a tracker, tested for a week on four look-alike dairy calves</i></p>
 
@@ -15,6 +15,7 @@
 </p>
 
 <p align="center">
+  <a href="#videos">Videos</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#results">Results</a> ·
   <a href="#what-makes-the-re-id-work">What makes it work</a> ·
@@ -28,14 +29,27 @@ Video tracking can follow objects in one environment for days. Production spaces
 
 A farm is our test case, and a hard one: four black and white dairy calves that look alike from above, one overhead camera, infrared nights, and a recording stop of almost six hours every night, so that no track survives from one day to the next.
 
+## Videos
+
+The videos show the system best. One video per day of the week of 04-22 to 04-28, each colour one calf, at 50× speed with the clock in every frame. Select a day to play it. While people are in the pen the picture is mosaicked, and the feed alley beyond the rail is mosaicked throughout.
+
+<table>
+<tr><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240422_identities.mp4"><img src="docs/media/week/20240422.jpg" width="200" alt="Calf identities on 2024-04-22, video at 50 times speed"></a><br><sub><b>04-22</b>, validation</sub></td><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240423_identities.mp4"><img src="docs/media/week/20240423.jpg" width="200" alt="Calf identities on 2024-04-23, video at 50 times speed"></a><br><sub><b>04-23</b>, validation</sub></td><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240424_identities.mp4"><img src="docs/media/week/20240424.jpg" width="200" alt="Calf identities on 2024-04-24, video at 50 times speed"></a><br><sub><b>04-24</b>, test</sub></td><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240425_identities.mp4"><img src="docs/media/week/20240425.jpg" width="200" alt="Calf identities on 2024-04-25, video at 50 times speed"></a><br><sub><b>04-25</b>, test</sub></td></tr>
+<tr><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240426_identities.mp4"><img src="docs/media/week/20240426.jpg" width="200" alt="Calf identities on 2024-04-26, video at 50 times speed"></a><br><sub><b>04-26</b>, test</sub></td><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240427_identities.mp4"><img src="docs/media/week/20240427.jpg" width="200" alt="Calf identities on 2024-04-27, video at 50 times speed"></a><br><sub><b>04-27</b>, test</sub></td><td align="center"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240428_identities.mp4"><img src="docs/media/week/20240428.jpg" width="200" alt="Calf identities on 2024-04-28, video at 50 times speed"></a><br><sub><b>04-28</b>, test</sub></td><td align="center"><a href="https://sonam525.github.io/Re-id-for-tracking/#videos"><sub>All videos with a player<br>on the project page</sub></a></td></tr>
+</table>
+
+<table>
+<tr><td align="center" width="50%"><a href="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/20240423_1800-2400_teacher_student.mp4"><img src="docs/media/teacher_student_poster.jpg" alt="The tracker with the SAM 3 backbone and with the distilled student backbone, side by side"></a><br><sub><b>Teacher and student</b>, 04-23 18:00 to midnight. Left, the tracker with SAM 3's own backbone; right, with the distilled student. From about 23:30 the teacher loses calves; the student keeps all four. Colours are tracker slots.</sub></td>
+<td align="center" width="50%"><a href="https://sonam525.github.io/Re-id-for-tracking/media/20240422_1641-1748_refine_side_by_side.mp4"><img src="docs/media/refine_poster.jpg" alt="Tracked masks before and after mask refinement, side by side"></a><br><sub><b>Mask refinement</b>, 04-22 16:41 to 17:48. Tracked masks before (left) and after (right) refinement.</sub></td></tr>
+</table>
+
+**Highlights**
+
 - **Over 99 % of labelled time correct.** 99.97 % and 99.88 % on the two validation days, and 99.27 % on 04-24, the one test day with a reference identity for every minute (a veterinarian's interval notes).
 - **Five test days without an exchange of labels.** Over 90 h of test video, no exchange of two calves' labels was found, and both wrong labels that lasted more than a minute were flagged for review.
 - **Names come back after the night.** Every first label was correct after five of the six overnight recording stops.
 - **"?" instead of a guess.** A doubtful segment stays unlabelled, so an error does not run on for hours.
 - **Lightweight.** A 22-million-parameter DINOv3 embedding was at least as accurate as a 6.7-billion-parameter one, and the identity layer runs on a CPU.
-
-<p align="center"><img src="docs/media/overview.png" width="900" alt="Left, the four calves named by coat: Black, White, Half-and-half and Two-dots. Middle, anonymous tracker segments pass through the identity layer, which uses a frozen expert-verified anchor pool and a temporal pool, decides jointly every 3 minutes and writes '?' when unsure, and comes out as named runs. Right, the identity timeline of 22 to 28 April with the headline results."></p>
-<p align="center"><sub>The safety net at work. The tracker's segments come in anonymous and leave with a calf's name, or "?". Right: the labels over the week of 22 to 28 April, minute by minute (blue, named; hatched, "?"). Videos of every day are on the <a href="https://sonam525.github.io/Re-id-for-tracking/#videos">project page</a>.</sub></p>
 
 ## How it works
 
@@ -49,6 +63,9 @@ A farm is our test case, and a hard one: four black and white dairy calves that 
 - a **temporal pool** that collects the week's confidently labelled crops.
 
 The scores are blended 0.6 anchor to 0.4 temporal. The frozen anchors bound how far the self-fed pool can drift.
+
+<p align="center"><img src="docs/media/figs/decisions.png" width="760" alt="Illustration of the identity layer over eight 3-minute windows: labels of three runs, the score table of one window with the joint assignment, accumulated score differences against the 0.015 margin, and the final labels after relabelling and the closed-pen rules."></p>
+<p align="center"><sub>How the layer decides, with illustrative numbers. (a) Labels of three runs during the pass; triangles, review flags. (b) One window: each run scored against each calf as 0.6 × anchor + 0.4 × temporal, then assigned jointly. (c) A label changes only once the accumulated evidence clears the 0.015 margin. (d) Final labels: one run relabelled backward and forward, one demoted to "?".</sub></p>
 
 **Doubt is visible.** A name changes only when the evidence clearly favours another animal, and then for the whole run (the part of a segment that carries one label), backward as well as forward. When the evidence is thin, the layer writes "?" or flags the segment for review. Four rules for a closed pen use the fact that it holds exactly four calves. Each morning, the new segments are named against both pools like any other segment.
 
@@ -73,8 +90,6 @@ The veterinarian reviewed the five test days (90.46 h of video) at 50× speed: 0
 
 - **No exchange of two calves' labels was found.**
 - **Two wrong labels lasted more than a minute, and both were flagged for review.** At the feeder on 04-24, a tracker mask hopped to a neighbouring calf, and a later joint decision gave the whole segment that calf's label, including about 10 minutes before the hop (08:20 to 08:30). After the last night, on 04-28, one calf carried another's label for 20 minutes until the layer corrected it at 06:00.
-- **04-24 has a reference identity for every minute**, from the veterinarian's interval notes. Against the notes as written, 99.27 % of labelled time was correct, and 5.2 % of the reference time was left as "?". Re-examining only the intervals where the system and the notes disagreed showed that the notes placed one exchange 8.7 minutes early and recorded one that the tracks rule out. With these two change points corrected, accuracy is 99.70 %; because only disagreements were re-examined, this correction can only favour the system, so both scores are given, the notes as written first.
-- **Caution costs coverage.** Over the test days, 96.11 % of track time carried a calf label. The longest unlabelled stretch was on the evening of 04-24, after a contest over one calf's identity.
 
 ### After each overnight stop
 
@@ -97,42 +112,27 @@ The veterinarian reviewed the five test days (90.46 h of video) at 50× speed: 0
 
 ## What makes the re-ID work
 
-The design follows four lessons, each measured on the validation days.
+Each part of the identity layer was compared with its alternatives on the validation days. The design rests on four lessons:
 
-1. **One crop is too weak; many crops decide.** Seen from above, the calves differ mainly in how much of the coat is white and where, and infrared light washes this out. A single crop names the right calf 87.92 % of the time. Assigned jointly in 5-minute windows against a correctly labelled pool, the same crops give 99.26 % right decisions, because per-crop errors do not line up. The layer therefore never names a calf from one crop, and keeps deciding: on tracks of an earlier tracker version, deciding once per segment labelled 85.56 % of frames correctly on 04-22 (46.5 % at night, where one low-margin decision swapped two calves), while re-deciding jointly every 3 minutes made no silent error on either validation day.
-2. **Appearance must not steer the tracker.** The first version let the appearance pool re-assign the four tracks at regular intervals. With evidence this weak per crop, it permuted tracks that the tracker had been following correctly: in three tracked stretches of the validation days, 47.6 % of 197,213 frames carried a wrong label. Inside a segment, association is spatial and belongs to the tracker. Identity is decided by a separate layer that sees the whole timeline, may revise a label and may abstain.
-3. **Individual exemplars, not averages.** A running average per calf and hour blurs posture-specific evidence. Matching a crop with its five most similar individual exemplars beat hourly averages of the same features by 6.16 percentage points (95 % CI 3.73 to 8.77), on 536 query windows of 04-22. Splitting each crop into top, middle and bottom thirds did not raise accuracy (94.59 % against 95.34 % for whole crops, a tie), but correct decisions had larger margins (0.0595 against 0.0469), so the split was kept.
-4. **A pool fed by its own labels locks in its first error; frozen anchors stop it.** One wrong decision that enters the pool attracts more crops of the wrong calf and becomes a self-consistent swap. On earlier tracks, 99.26 % of 5-minute windows were right against a correctly labelled pool, but 92.00 % when the matcher's own decisions fed the pool, and only 54.26 % on the night of 04-22. The frozen anchor pool of verified training-day crops is the reference this loop cannot corrupt. On identical final tracks, the labelled time correct on 04-22 and 04-23 was:
+| Lesson | Evidence on the validation days |
+|:---|:---|
+| **One crop is too weak; many crops decide** | 87.92 % of single crops named correctly, against 99.26 % of 5-minute windows matched against a correctly labelled pool |
+| **Appearance must not steer the tracker** | An early version that re-assigned tracks by appearance left 43.8 % of 427,932 frames with a wrong label, up to 99 % in busy evenings (figure below) |
+| **Individual exemplars, not averages** | +6.16 points over hourly averages of the same features (panel c below) |
+| **A self-fed pool locks in its first error; frozen anchors stop it** | 92.00 % of windows with a self-fed pool against 99.26 % with a correct one; the anchors fixed the first night, 74.52 → 100 % (panel d below) |
 
-| Pool | 04-22 | 04-23 | Night of 04-22 |
-|:---|---:|---:|---:|
-| Temporal pool rebuilt every morning | 90.66 % | 91.56 % | 59.80 % |
-| Temporal pool accumulated over the week | 94.87 % | 99.90 % | 74.52 % |
-| + frozen anchors | 99.97 % | 99.90 % | 100 % |
-| + colour filter (final system) | **99.97 %** | **99.88 %** | 100 % |
+<p align="center"><img src="docs/media/figs/ablation.png" width="820" alt="Six panels comparing the parts of the identity layer: cue, body parts, exemplars against hourly averages, pool design, anchor weight and decision window."></p>
+<p align="center"><sub>Each part compared with its alternatives (blue, final choice; grey, alternatives). (a–c) 536 five-minute queries of 04-22 on the original SAM 3 tracks; whiskers, 95 % intervals. (d) Identical final tracks, before the colour filter. (e, f) Tracks of an earlier tracker version.</sub></p>
 
-Other settings compared on the validation days:
+<p align="center"><img src="docs/media/figs/appearance_steering.png" width="480" alt="Bar chart of the share of frames with a wrong slot label per tracking window when appearance re-assigned the tracks: 4 to 99 percent in evening windows, 0 in all morning windows."></p>
+<p align="center"><sub>Why appearance must not steer the tracker. An early tracker version let the appearance pool re-assign the four tracks every few minutes; the bars give the share of frames whose stored label disagreed with the identity chain restored afterwards by frame-to-frame mask matching. Settled mornings were unaffected; busy evenings were not.</sub></p>
 
-| Setting | Final choice | Compared with | Result |
-|:---|:---|:---|:---|
-| Cue | DINOv3 embedding | Colour histogram; last-seen position | Embedding +11.38 and +24.81 pts over all queries; colour fails at night (57.9 %), position by day (63.6 %) |
-| Anchor weight | 0.6 | 0 to 1 | Every labelled crop correct at every weight; crops flagged 1.9 % against 23.9 % without anchors and 11.1 % with anchors alone |
-| Window length | 3 min | 5 min | 95.3 / 96.8 % against 77.1 / 80.5 % of crops labelled, no silent error at either |
-| Unnamed last calf | Assign it and flag it | Leave it unlabelled | Coverage on 04-23 97.6 % against 78.3 %, no silent error |
-| Backbone | DINOv3 ViT-S/16 | ViT-B, ViT-L, ViT-7B | Below |
+**A small embedding model is enough.** The smallest DINOv3 model, ViT-S/16 with 22 million parameters, was the most accurate per crop (a). In 5-minute windows all four models were within sampling error of each other (b), because aggregation over time, not model capacity, carries the decision. Its embeddings are a tenth the size of ViT-7B's (c).
 
-The cue comparison used the original SAM 3 tracks; anchor weight, window length, the last-calf rule and the backbones used tracks of an earlier tracker version. [`results/ablation.csv`](results/ablation.csv) lists each comparison with its tracks, and the paper's supplement gives every comparison in full.
+<p align="center"><img src="docs/media/figs/backbone.png" width="820" alt="Three panels comparing DINOv3 ViT-S, ViT-B, ViT-L and ViT-7B: per-crop accuracy and window accuracy against parameters, and weight size, embedding dimension and bytes per exemplar."></p>
+<p align="center"><sub>DINOv3 backbones on the validation days, three-part embedding: (a) per-crop accuracy and (b) 5-minute windows against a correctly labelled pool, against parameters (log scale; small open markers, single days); (c) 16-bit weights, embedding dimension and bytes per stored exemplar.</sub></p>
 
-**A small embedding model is enough.** On the same crops, the smallest DINOv3 model was the most accurate per crop. In 5-minute windows all four were within sampling error of each other, because aggregation over time, not model capacity, carries the decision.
-
-| Backbone | Parameters | Embedding size | Per crop | 5-min windows |
-|:---|---:|---:|---:|---:|
-| **ViT-S/16** | **22 M** | **384** | **87.92 %** | 99.26 % |
-| ViT-B/16 | 86 M | 768 | 85.91 % | 98.97 % |
-| ViT-L/16 | 303 M | 1,024 | 86.75 % | 99.34 % |
-| ViT-7B/16 | 6,716 M | 4,096 | 84.87 % | 99.04 % |
-
-Per crop: 6,814 decisions. Windows: 1,355 five-minute windows against a correctly labelled pool. All four models named every calf correctly after the 04-22 to 04-23 night.
+The numbers behind each figure are in [`results/`](results), and the paper's supplement gives every comparison in full.
 
 ## Weights
 

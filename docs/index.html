@@ -3,26 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Resilient re-ID for trackers</title>
+<title>Re-ID for consistent tracking</title>
 <meta name="description" content="A lightweight re-identification safety net under a tracker: over 99 % of labelled time correct on the days with a reference for every minute, tested over a week of video of four look-alike dairy calves.">
 <meta name="color-scheme" content="light dark">
-<meta property="og:title" content="Resilient re-ID framework for trackers with over 99 % accuracy">
+<meta property="og:title" content="Re-ID for consistent tracking">
 <meta property="og:description" content="A lightweight re-identification safety net under a tracker: over 99 % of labelled time correct on the days with a reference for every minute, tested over a week of video of four look-alike dairy calves.">
-<meta property="og:image" content="https://sonam525.github.io/Re-id-for-tracking/media/overview.png">
+<meta property="og:image" content="https://sonam525.github.io/Re-id-for-tracking/media/week/20240424.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='13' height='13' rx='3' fill='%23d9443f'/%3E%3Crect x='17' y='2' width='13' height='13' rx='3' fill='%233fb950'/%3E%3Crect x='2' y='17' width='13' height='13' rx='3' fill='%232f81d7'/%3E%3Crect x='17' y='17' width='13' height='13' rx='3' fill='%23d4b106'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
 <header class="top">
-  <a class="brand" href="#overview">Resilient re-ID</a>
+  <a class="brand" href="#overview">Re-ID for tracking</a>
   <nav aria-label="Sections">
     <a href="#overview">Overview</a>
+    <a href="#videos">Videos</a>
     <a href="#week">The week</a>
     <a href="#pipeline">How it works</a>
     <a href="#results">Results</a>
     <a href="#why">Why it works</a>
-    <a href="#videos">Videos</a>
     <a href="#data">Masks</a>
     <a href="#cite">Citation</a>
   </nav>
@@ -33,7 +33,7 @@
 <section id="overview" class="hero stack">
   <div class="hero-text">
     <p class="eyebrow">Paper in preparation</p>
-    <h1>Resilient re-ID framework for trackers with over 99&nbsp;% accuracy</h1>
+    <h1>Re-ID for consistent tracking</h1>
     <p class="lead">Video tracking can follow objects in one environment for days. Production spaces such as farms and factories already keep a record of each target, as text or from sensors, and aligning vision with these records could support longitudinal analyses. Trackers, however, switch identities over long video, and one switch misaligns the rest of a target's history. Instead of chasing tracking scores, we built a lightweight re-identification safety net under a tracker.</p>
     <p>A farm is our test case, and a hard one: four black and white dairy calves that look alike from above, one overhead camera, infrared nights and a recording stop of almost six hours every night. The safety net names every segment the tracker writes, revises a name when later evidence disagrees, and writes "?" or flags the segment for review when the evidence is weak.</p>
     <p class="links">
@@ -43,9 +43,36 @@
       <a class="button ghost" href="https://github.com/Sonam525/FarmSAM">Tracker (FarmSAM)</a>
     </p>
   </div>
-  <figure class="hero-fig">
-    <a href="media/overview.png"><img src="media/overview.png" width="1571" height="626" alt="Left, the four calves named by coat: Black, White, Half-and-half and Two-dots. Middle, anonymous tracker segments pass through the identity layer, which uses a frozen expert-verified anchor pool and a temporal pool, decides jointly every 3 minutes and writes '?' when unsure, and comes out as named segments. Right, the identity timeline of 22 to 28 April with the headline results."></a>
-    <figcaption>The safety net at work. The tracker's segments come in anonymous and leave with a calf's name, or "?". Right: the labels over the week, minute by minute (blue, named; hatched, "?"). Select the figure to open it at full size.</figcaption>
+</section>
+
+<section id="videos">
+  <h2>Videos</h2>
+  <p>The videos show the system best. They run at 50× speed, one frame every 2 s of real time, with the clock in each frame.</p>
+
+  <h3>The week, day by day</h3>
+  <p>One video per day, from the first light after the night. Each colour is one calf. While people are in the pen, the picture is mosaicked, and the feed alley beyond the rail is mosaicked throughout.</p>
+  <div class="daypick" id="daypick" role="group" aria-label="Day"></div>
+  <figure class="wide video week">
+    <video id="weekvideo" controls playsinline preload="none" poster="media/week/20240424.jpg" width="640" height="360" aria-label="Calf identities on 2024-04-24, 50 times speed">
+      <source src="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240424_identities.mp4" type="video/mp4">
+    </video>
+    <figcaption id="week-cap">04-24, test, from 05:48. Mosaicked for 91 minutes in all, around the times people were in the pen.</figcaption>
+  </figure>
+
+  <h3>Mask refinement</h3>
+  <figure class="wide video">
+    <video id="refine" controls playsinline preload="none" poster="media/refine_poster.jpg" width="1280" height="392" aria-label="Before and after mask refinement, 2024-04-22, 16:41 to 17:48">
+      <source src="media/20240422_1641-1748_refine_side_by_side.mp4" type="video/mp4">
+    </video>
+    <figcaption>04-22, 16:41 to 17:48: tracked masks before (left, or top on a phone) and after (right, or bottom) refinement. Each colour is one calf. At 17:18 the green mask covers part of its calf before and the whole calf after.</figcaption>
+  </figure>
+
+  <h3>Teacher and student</h3>
+  <figure class="wide video">
+    <video id="pair" controls playsinline preload="none" poster="media/teacher_student_poster.jpg" width="1280" height="392" aria-label="The tracker with the SAM 3 backbone and with the distilled student backbone, side by side, 2024-04-23, 18:00 to midnight">
+      <source src="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/20240423_1800-2400_teacher_student.mp4" type="video/mp4">
+    </video>
+    <figcaption>04-23, 18:00 to midnight, from daylight into infrared night, frame for frame. Left (top on a phone): the tracker with SAM 3's own backbone. Right (bottom): the same tracker with the distilled student backbone, run with its mask repair on. Here the colours are tracker slots, not calves. From about 23:30 the teacher loses calves; the student keeps all four.</figcaption>
   </figure>
 </section>
 
@@ -94,6 +121,10 @@
       <p>A name changes only when the evidence clearly favours another calf, and then for the whole run (the part of a segment that carries one label), backward and forward. When the evidence is thin the layer writes "?" or flags the segment for review. Mask repair and a colour check clean the masks; neither reads identity.</p>
     </div>
   </div>
+  <figure class="wide fig">
+    <img src="media/figs/decisions.png" width="1619" height="1040" loading="lazy" alt="Illustration of the identity layer over eight 3-minute windows: labels of three runs, the score table of one window with the joint assignment, accumulated score differences against the 0.015 margin, and the final labels after relabelling and the closed-pen rules.">
+    <figcaption>How the layer decides, with illustrative numbers. (a) Labels of three runs during the pass; triangles, review flags. (b) One window: each run scored against each calf as 0.6 × anchor + 0.4 × temporal, then assigned jointly. (c) A label changes only once the accumulated evidence clears the 0.015 margin. (d) Final labels: one run relabelled backward and forward, one demoted to "?".</figcaption>
+  </figure>
 </section>
 
 <section id="results">
@@ -116,8 +147,6 @@
   <ul class="plain">
     <li><strong>No exchange of two calves' labels was found.</strong></li>
     <li><strong>Two wrong labels lasted more than a minute, and both were flagged.</strong> At the feeder on 04-24 a tracker mask hopped to a neighbouring calf, and a later joint decision gave the whole segment that calf's label, including about 10 minutes before the hop (08:20 to 08:30). After the last night, on 04-28, one calf carried another's label for 20 minutes until the layer corrected it at 06:00.</li>
-    <li><strong>04-24 has a reference identity for every minute</strong>, from the veterinarian's interval notes. Against the notes as written, 99.27 % of labelled time was correct and 5.2 % of the reference time was left as "?". Re-examining only the intervals where the system and the notes disagreed showed that the notes placed one exchange 8.7 minutes early and recorded one that the tracks rule out. With these corrected, accuracy is 99.70 %; because only disagreements were re-examined, this correction can only favour the system, so both scores are given, the notes as written first.</li>
-    <li><strong>Caution costs coverage.</strong> 96.11 % of track time on the test days carried a calf label. The longest unlabelled stretch was on the evening of 04-24, after a contest over one calf's identity.</li>
   </ul>
 
   <h3>After each overnight stop</h3>
@@ -150,79 +179,32 @@
 
 <section id="why">
   <h2>What makes the re-ID work</h2>
-  <p>The design follows four lessons, each measured on the validation days.</p>
-  <ol class="why">
-    <li><strong>One crop is too weak; many crops decide.</strong> Seen from above, the calves differ mainly in how much of the coat is white and where, and infrared light washes this out. A single crop names the right calf 87.92 % of the time; assigned jointly in 5-minute windows against a correctly labelled pool, the same crops give 99.26 % right decisions, because per-crop errors do not line up. The layer therefore never names a calf from one crop, and keeps deciding: on tracks of an earlier tracker version, deciding once per segment labelled 85.56 % of frames correctly on 04-22 (46.5 % at night), while re-deciding jointly every 3 minutes made no silent error on either validation day.</li>
-    <li><strong>Appearance must not steer the tracker.</strong> The first version let the appearance pool re-assign the four tracks at regular intervals. With evidence this weak per crop, it permuted tracks that the tracker had been following correctly: in three tracked stretches of the validation days, 47.6 % of 197,213 frames carried a wrong label. Inside a segment, association is spatial and belongs to the tracker; identity is decided by a separate layer that sees the whole timeline, may revise a label and may abstain.</li>
-    <li><strong>Individual exemplars, not averages.</strong> Matching a crop with its five most similar individual exemplars beat hourly averages of the same features by 6.16 percentage points (95 % CI 3.73 to 8.77), on 536 query windows of 04-22. Splitting each crop into thirds did not raise accuracy (94.59 % against 95.34 % for whole crops, a tie), but correct decisions had larger margins, so the split was kept.</li>
-    <li><strong>A pool fed by its own labels locks in its first error; frozen anchors stop it.</strong> On earlier tracks, 99.26 % of 5-minute windows were right against a correctly labelled pool, but 92.00 % when the matcher's own decisions fed the pool, and only 54.26 % on the night of 04-22. The frozen anchor pool of verified training-day crops is the reference this loop cannot corrupt. On identical final tracks:</li>
-  </ol>
+  <p>Each part of the identity layer was compared with its alternatives on the validation days. The design rests on four lessons:</p>
   <div class="scroll"><table>
-    <thead><tr><th>Pool</th><th class="n">04-22</th><th class="n">04-23</th><th class="n">Night of 04-22</th></tr></thead>
+    <thead><tr><th>Lesson</th><th>Evidence on the validation days</th></tr></thead>
     <tbody>
-      <tr><td>Temporal pool rebuilt every morning</td><td class="n">90.66 %</td><td class="n">91.56 %</td><td class="n">59.80 %</td></tr>
-      <tr><td>Temporal pool accumulated over the week</td><td class="n">94.87 %</td><td class="n">99.90 %</td><td class="n">74.52 %</td></tr>
-      <tr><td>+ frozen anchors</td><td class="n">99.97 %</td><td class="n">99.90 %</td><td class="n">100 %</td></tr>
-      <tr class="strong"><td>+ colour filter (final system)</td><td class="n">99.97 %</td><td class="n">99.88 %</td><td class="n">100 %</td></tr>
+      <tr><td><strong>One crop is too weak; many crops decide</strong></td><td>87.92 % of single crops named correctly, against 99.26 % of 5-minute windows matched against a correctly labelled pool</td></tr>
+      <tr><td><strong>Appearance must not steer the tracker</strong></td><td>An early version that re-assigned tracks by appearance left 43.8 % of 427,932 frames with a wrong label, up to 99 % in busy evenings (second figure)</td></tr>
+      <tr><td><strong>Individual exemplars, not averages</strong></td><td>+6.16 points over hourly averages of the same features (panel c)</td></tr>
+      <tr><td><strong>A self-fed pool locks in its first error; frozen anchors stop it</strong></td><td>92.00 % of windows with a self-fed pool against 99.26 % with a correct one; the anchors fixed the first night, 74.52 → 100 % (panel d)</td></tr>
     </tbody>
   </table></div>
-  <p class="note">Labelled time correct.</p>
-
-  <h3>Other settings compared</h3>
-  <div class="scroll"><table>
-    <thead><tr><th>Setting</th><th>Final choice</th><th>Compared with</th><th>Result on the validation days</th></tr></thead>
-    <tbody>
-      <tr><td>Cue</td><td>DINOv3 embedding</td><td>Colour histogram; last-seen position</td><td>Embedding +11.38 and +24.81 pts over all queries; colour fails at night (57.9 %), position by day (63.6 %)</td></tr>
-      <tr><td>Anchor weight</td><td>0.6</td><td>0 to 1</td><td>Every labelled crop correct at every weight; crops flagged 1.9 % against 23.9 % without anchors and 11.1 % with anchors alone</td></tr>
-      <tr><td>Window length</td><td>3 min</td><td>5 min</td><td>95.3 / 96.8 % against 77.1 / 80.5 % of crops labelled, no silent error at either</td></tr>
-      <tr><td>Unnamed last calf</td><td>Assign it and flag it</td><td>Leave it unlabelled</td><td>Coverage on 04-23 97.6 % against 78.3 %, no silent error</td></tr>
-    </tbody>
-  </table></div>
-  <p class="note">The cue comparison used the original SAM 3 tracks; anchor weight, window length, the last-calf rule and the backbones below used tracks of an earlier tracker version. The paper's supplement gives every comparison in full.</p>
+  <figure class="wide fig">
+    <img src="media/figs/ablation.png" width="1619" height="1701" loading="lazy" alt="Six panels comparing the parts of the identity layer: cue, body parts, exemplars against hourly averages, pool design, anchor weight and decision window.">
+    <figcaption>Each part compared with its alternatives (blue, final choice; grey, alternatives). (a–c) 536 five-minute queries of 04-22 on the original SAM 3 tracks; whiskers, 95 % intervals. (d) Identical final tracks, before the colour filter. (e, f) Tracks of an earlier tracker version.</figcaption>
+  </figure>
+  <figure class="wide fig narrow">
+    <img src="media/figs/appearance_steering.png" width="1063" height="993" loading="lazy" alt="Bar chart of the share of frames with a wrong slot label per tracking window when appearance re-assigned the tracks: 4 to 99 percent in evening windows, 0 in all morning windows.">
+    <figcaption>Why appearance must not steer the tracker. An early tracker version let the appearance pool re-assign the four tracks every few minutes; the bars give the share of frames whose stored label disagreed with the identity chain restored afterwards by frame-to-frame mask matching. Settled mornings were unaffected; busy evenings were not.</figcaption>
+  </figure>
 
   <h3>A small embedding model is enough</h3>
-  <p>On the same crops, the smallest DINOv3 model was the most accurate per crop. In 5-minute windows all four were within sampling error of each other: aggregation over time, not model capacity, carries the decision.</p>
-  <div class="scroll"><table>
-    <thead><tr><th>DINOv3 backbone</th><th class="n">Parameters</th><th class="n">Embedding size</th><th class="n">Per crop</th><th class="n">5-min windows</th></tr></thead>
-    <tbody>
-      <tr class="strong"><td>ViT-S/16</td><td class="n">22 M</td><td class="n">384</td><td class="n">87.92 %</td><td class="n">99.26 %</td></tr>
-      <tr><td>ViT-B/16</td><td class="n">86 M</td><td class="n">768</td><td class="n">85.91 %</td><td class="n">98.97 %</td></tr>
-      <tr><td>ViT-L/16</td><td class="n">303 M</td><td class="n">1,024</td><td class="n">86.75 %</td><td class="n">99.34 %</td></tr>
-      <tr><td>ViT-7B/16</td><td class="n">6,716 M</td><td class="n">4,096</td><td class="n">84.87 %</td><td class="n">99.04 %</td></tr>
-    </tbody>
-  </table></div>
-  <p class="note">Per crop: 6,814 decisions. Windows: 1,355 five-minute windows against a correctly labelled pool. All four models named every calf correctly after the 04-22 to 04-23 night.</p>
-</section>
-
-<section id="videos">
-  <h2>Videos</h2>
-  <p>Videos run at 50× speed, one frame every 2 s of real time, with the clock in each frame.</p>
-
-  <h3>The week, day by day</h3>
-  <p>One video per day, from the first light after the night. Each colour is one calf. While people are in the pen, the picture is mosaicked, and the feed alley beyond the rail is mosaicked throughout.</p>
-  <div class="daypick" id="daypick" role="group" aria-label="Day"></div>
-  <figure class="wide video week">
-    <video id="weekvideo" controls playsinline preload="none" poster="media/week/20240424.jpg" width="640" height="360" aria-label="Calf identities on 2024-04-24, 50 times speed">
-      <source src="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/week/20240424_identities.mp4" type="video/mp4">
-    </video>
-    <figcaption id="week-cap">04-24, test, from 05:48. Mosaicked for 91 minutes in all, around the times people were in the pen.</figcaption>
+  <p>The smallest DINOv3 model, ViT-S/16 with 22 million parameters, was the most accurate per crop (a). In 5-minute windows all four models were within sampling error of each other (b), because aggregation over time, not model capacity, carries the decision. Its embeddings are a tenth the size of ViT-7B's (c).</p>
+  <figure class="wide fig">
+    <img src="media/figs/backbone.png" width="1619" height="709" loading="lazy" alt="Three panels comparing DINOv3 ViT-S, ViT-B, ViT-L and ViT-7B: per-crop accuracy and window accuracy against parameters, and weight size, embedding dimension and bytes per exemplar.">
+    <figcaption>DINOv3 backbones on the validation days, three-part embedding: (a) per-crop accuracy and (b) 5-minute windows against a correctly labelled pool, against parameters (log scale; small open markers, single days); (c) 16-bit weights, embedding dimension and bytes per stored exemplar.</figcaption>
   </figure>
-
-  <h3>Mask refinement</h3>
-  <figure class="wide video">
-    <video id="refine" controls playsinline preload="none" poster="media/refine_poster.jpg" width="1280" height="392" aria-label="Before and after mask refinement, 2024-04-22, 16:41 to 17:48">
-      <source src="media/20240422_1641-1748_refine_side_by_side.mp4" type="video/mp4">
-    </video>
-    <figcaption>04-22, 16:41 to 17:48: tracked masks before (left, or top on a phone) and after (right, or bottom) refinement. Each colour is one calf. At 17:18 the green mask covers part of its calf before and the whole calf after.</figcaption>
-  </figure>
-
-  <h3>Teacher and student</h3>
-  <figure class="wide video">
-    <video id="pair" controls playsinline preload="none" poster="media/teacher_student_poster.jpg" width="1280" height="392" aria-label="The tracker with the SAM 3 backbone and with the distilled student backbone, side by side, 2024-04-23, 18:00 to midnight">
-      <source src="https://huggingface.co/datasets/Sonam5/Calf-Identity-Tracking-Masks/resolve/main/videos/20240423_1800-2400_teacher_student.mp4" type="video/mp4">
-    </video>
-    <figcaption>04-23, 18:00 to midnight, from daylight into infrared night, frame for frame. Left (top on a phone): the tracker with SAM 3's own backbone. Right (bottom): the same tracker with the distilled student backbone, run with its mask repair on. Here the colours are tracker slots, not calves. From about 23:30 the teacher loses calves; the student keeps all four.</figcaption>
-  </figure>
+  <p class="note">The numbers behind each figure are <a href="https://github.com/Sonam525/Re-id-for-tracking/tree/main/results">in the repository as CSV</a>, and the paper's supplement gives every comparison in full.</p>
 </section>
 
 <section id="data">
@@ -266,7 +248,7 @@ binary = mask_utils.decode(mask_utils.frPyObjects(rle, h, w))   # h x w, uint8</
   <h2>Citation</h2>
   <p>The paper is in preparation. Until it is out, please cite this repository and the works below.</p>
 <pre><code>@misc{calf_identity_week,
-  title  = {Resilient re-ID framework for trackers with over 99\,\% accuracy},
+  title  = {Re-ID for consistent tracking},
   author = {Yang, Haiyu},
   year   = {2026},
   url    = {https://github.com/Sonam525/Re-id-for-tracking}

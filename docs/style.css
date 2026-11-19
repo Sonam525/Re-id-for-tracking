@@ -135,7 +135,11 @@ footer { max-width: 1080px; margin: 40px auto 0; padding: 16px 16px 32px; border
   .tile span { overflow-wrap: normal; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-.hero.stack { grid-template-columns: 1fr; gap: 20px; }
-.hero.stack .hero-fig img { background: #ffffff; padding: 8px; }
+.hero.stack { grid-template-columns: 1fr; gap: 12px; }
+.hero.stack h1 { font-size: clamp(30px, 4vw, 42px); }
+.hero.stack p { max-width: none; }
+.fig img { background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid var(--line); }
+.fig.narrow img { max-width: 520px; }
+.fig figcaption { max-width: none; }
 ol.why { padding-left: 22px; }
 ol.why li { margin: 0 0 10px; }
