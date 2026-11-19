@@ -89,7 +89,7 @@ The reference is an identity chain that the veterinarian reviewed end to end on 
 The veterinarian reviewed the five test days (90.46 h of video) at 50× speed: 04-25 to 04-28 end to end on the final system's video, and 04-24 interval by interval on an earlier version's video.
 
 - **No exchange of two calves' labels was found.**
-- **Two wrong labels lasted more than a minute, and both were flagged for review.** At the feeder on 04-24, a tracker mask hopped to a neighbouring calf, and a later joint decision gave the whole segment that calf's label, including about 10 minutes before the hop (08:20 to 08:30). After the last night, on 04-28, one calf carried another's label for 20 minutes until the layer corrected it at 06:00.
+- **Two wrong labels lasted more than a minute, and both were flagged for review.**
 
 ### After each overnight stop
 
@@ -101,14 +101,6 @@ The veterinarian reviewed the five test days (90.46 h of video) at 50× speed: 0
 | 04-25 to 04-26 | No wrong identity found | Expert review of the video |
 | 04-26 to 04-27 | No wrong identity found | Expert review of the video |
 | 04-27 to 04-28 | One calf wrong for 20 min, flagged; correct from 06:00 | Expert review of the video |
-
-### Tracking front end and cost
-
-- **Mask refinement** cut fragmented-mask time on the test days from 24.56 to 3.90 track-hours and removed all 19 fragment episodes of 10 minutes or more.
-- **Tracking** ran at 3.76 fps on one A10 GPU (1.33 GPU-hours per hour of video), within 2.45 GiB of GPU memory. The identity layer runs offline on a CPU.
-- **One-time human input:** the veterinarian watched 38 minutes of 50× overlay video of the training days and named the calves once on a sheet of stills.
-
-**Scope.** One pen, four calves, one camera and one week. The method uses no calf-specific trait, but it has been tested only on calves. No frame has hand-drawn mask ground truth. The tables are in [`results/`](results).
 
 ## What makes the re-ID work
 
