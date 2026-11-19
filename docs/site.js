@@ -11,11 +11,11 @@ const CONFIG = {
   week: [
     { day: "04-22", file: "20240422", role: "validation", from: "12:45", mosaic: 26 },
     { day: "04-23", file: "20240423", role: "validation", from: "05:44", mosaic: 151 },
-    { day: "04-24", file: "20240424", role: "held-out test", from: "05:48", mosaic: 91 },
-    { day: "04-25", file: "20240425", role: "held-out test", from: "05:44", mosaic: 123 },
-    { day: "04-26", file: "20240426", role: "held-out test", from: "05:44", mosaic: 181 },
-    { day: "04-27", file: "20240427", role: "held-out test", from: "05:45", mosaic: 39 },
-    { day: "04-28", file: "20240428", role: "held-out test", from: "05:40", mosaic: 49 },
+    { day: "04-24", file: "20240424", role: "test", from: "05:48", mosaic: 91 },
+    { day: "04-25", file: "20240425", role: "test", from: "05:44", mosaic: 123 },
+    { day: "04-26", file: "20240426", role: "test", from: "05:44", mosaic: 181 },
+    { day: "04-27", file: "20240427", role: "test", from: "05:45", mosaic: 39 },
+    { day: "04-28", file: "20240428", role: "test", from: "05:40", mosaic: 49 },
   ],
   weekStart: "04-24",
 };

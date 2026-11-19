@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "The paper is in preparation. Until it is out, please cite this repository."
-title: "Which calf is which, across a week"
+title: "Resilient re-ID framework for trackers with over 99 % accuracy"
 type: software
 authors:
   - family-names: "Yang"

@@ -135,3 +135,7 @@ footer { max-width: 1080px; margin: 40px auto 0; padding: 16px 16px 32px; border
   .tile span { overflow-wrap: normal; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.hero.stack { grid-template-columns: 1fr; gap: 20px; }
+.hero.stack .hero-fig img { background: #ffffff; padding: 8px; }
+ol.why { padding-left: 22px; }
+ol.why li { margin: 0 0 10px; }

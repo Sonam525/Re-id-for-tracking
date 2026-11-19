@@ -1,5 +1,6 @@
-day,role,stratum,trusted_min,correct_min,pct_of_trusted,pct_of_labelled,wrong_flagged_min,wrong_silent_min,question_mark_min,no_mask_min
-20240422,validation,main,2557.9,2518.4,98.45,99.967,0,0.83,0.63,38.1
-20240423,validation,main,4127.5,4049.0,98.1,99.885,0.54,4.14,3.89,69.9
-20240423,validation,late 23:30 to 24:00,86.1,55.1,,93.311,3.95,0,3.02,24.1
-20240424,test,main,3825.5,3558.0,93.0,99.27,13.44,12.63,198.7,42.7
+day,role,reference,stratum,trusted_min,correct_min,pct_of_trusted,pct_of_labelled,wrong_flagged_min,wrong_silent_min,question_mark_min,no_mask_min
+20240422,validation,reviewed identity chain,main,2557.94,2518.39,98.45,99.967,0.00,0.83,0.63,38.09
+20240423,validation,reviewed identity chain,main,4127.48,4049.02,98.10,99.8846,0.54,4.14,3.89,69.89
+20240423,validation,reviewed identity chain,late 23:30 to 24:00,86.1,55.1,,93.311,3.95,0,3.02,24.1
+20240424,test,interval notes as written,main,3825.50,3558.01,93.0,99.27,13.44,12.63,198.70,42.72
+20240424,test,interval notes with two change points corrected (only disagreements re-examined),main,3843.23,3593.86,93.5,99.70,9.84,0.84,199.05,39.64

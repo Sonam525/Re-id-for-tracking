@@ -1,0 +1,15 @@
+component,final_choice,compared_with,result_validation_days,tracks,source
+pool across days,accumulated pool + frozen anchors + colour filter,pool rebuilt each morning -> accumulated -> + anchors -> + colour filter,labelled time correct 22/23 Apr: 90.66/91.56 -> 94.87/99.90 -> 99.97/99.90 -> 99.97/99.88 %; night of 22 Apr 59.80 -> 74.52 -> 100 -> 100 %,final,analysis output
+pool feeding,frozen anchors guard the self-fed pool,correctly labelled pool vs self-fed pool (ViT-S),5-min windows 99.26 vs 92.00 %; night of 22 Apr 99.22 vs 54.26 %,earlier tracker version,analysis output
+re-assigning tracks by appearance,spatial association inside a segment; identity in a separate layer,appearance pool re-assigns the tracks at intervals,47.6 % of 197213 frames in three tracked stretches carried a wrong label,first tracker version,analysis output (re-linking of stored masks)
+matching,individual exemplars (top 5),hourly averages of three-part features,+6.16 pts [3.73; 8.77] on 536 query windows of 22 Apr,original SAM 3,analysis output
+matching,individual exemplars (top 5),hourly averages of whole crops (earlier work),+0.19 pts [-2.05; 2.43]; 19 of 19 tracker breaks resolved vs 17,original SAM 3,analysis output
+body split,top / middle / bottom thirds,whole crop,94.59 vs 95.34 % (-0.75 pts [-2.80; 1.12]); mean margin 0.0595 vs 0.0469,original SAM 3,analysis output
+cue,DINOv3 embedding,colour histogram; last-seen position,embedding +11.38 pts [8.20; 14.93] and +24.81 pts [20.71; 28.92]; colour 92.2 % day / 57.9 % night; position 63.6 % day / 87.1 % night,original SAM 3,analysis output
+decisions,joint every 3 min,once per segment,once per segment 85.56 % of frames correct on 22 Apr (night 46.5 %); periodic: no silent error and every unflagged crop correct (1642 of 2997),earlier tracker version,analysis output
+anchor weight,0.6,0; 0.5; 0.7-0.9; 1,every labelled crop correct and no silent error at every weight; crops flagged 1.9 % vs 23.9 % (w=0) and 11.1 % (w=1),earlier tracker version,analysis output
+window length,3 min,5 min,crops labelled 95.3/96.8 vs 77.1/80.5 %; no silent error at either,earlier tracker version,analysis output
+window length,3 min,1 min,no gain in coverage,earlier tracker version,project log (output not retained)
+elimination rule,assign and flag,leave unlabelled,coverage on 23 Apr 97.6 vs 78.3 %; no silent error,earlier tracker version,project log (output not retained)
+exemplars per query,top 5,top 10; top 20,crop agreement on 23 Apr 99.57 -> 71.58 -> 59.48 %,earlier tracker version,project log (output not retained)
+crop interval,one crop per 15 s,one per 60 s,wrong track time 168.6 vs 351.6 min over both days; no silent error,earlier tracker version,project log (output not retained)
