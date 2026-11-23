@@ -103,10 +103,10 @@
 
 <section id="pipeline">
   <h2>How it works</h2>
-  <picture class="wide">
-    <source media="(max-width: 640px)" srcset="assets/pipeline_narrow.svg">
-    <img src="assets/pipeline.svg" width="980" height="352" alt="Pipeline from overhead video through the tracker to anonymous segments, then crops and embeddings, then the offline identity layer with an anchor pool, a colour filter and mask refinement.">
-  </picture>
+  <figure class="wide fig">
+    <img src="media/figs/pipeline.png" width="1780" height="1020" alt="The tracker and its re-identification safety net. Top: overhead video at 5 fps goes to a SAM 3 tracker with a distilled backbone, re-seeded by an RF-DETR detector, which writes anonymous segments; mask refinement repairs fragments. Bottom: canonical crops every 15 s are embedded with DINOv3 ViT-S/16 on three body thirds and filtered by colour; the offline identity layer scores each run every 3 minutes against an anchor pool (weight 0.6) and a temporal pool (0.4), assigns jointly with hysteresis, holds and flags or relabels backward, and applies closed-pen rules or leaves '?'. Outputs: a per-calf record, human review of flagged runs, and evaluation in calf-minutes.">
+    <figcaption>The tracker and its re-identification safety net (Fig. 3 of the paper). Top: the tracker stores anonymous mask segments, and refinement repairs fragments. Bottom: the safety net embeds crops every 15 s and every 3 minutes names each run, flags it or leaves it "?". Blue outline: new in this work; grey fill: reused; dashed: human step.</figcaption>
+  </figure>
   <div class="columns">
     <div>
       <h3>The tracker follows, but never names</h3>

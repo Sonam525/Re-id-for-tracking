@@ -53,7 +53,8 @@ The videos show the system best. One video per day of the week of 04-22 to 04-28
 
 ## How it works
 
-<p align="center"><img src="figures/pipeline.svg" width="860" alt="Pipeline from overhead video through the tracker to anonymous segments, crops and embeddings, then the offline identity layer, colour filter and mask refinement."></p>
+<p align="center"><img src="docs/media/figs/pipeline.png" width="860" alt="The tracker and its re-identification safety net. Top: overhead video at 5 fps goes to a SAM 3 tracker with a distilled backbone, re-seeded by an RF-DETR detector, which writes anonymous segments; mask refinement repairs fragments. Bottom: canonical crops every 15 s are embedded with DINOv3 ViT-S/16 on three body thirds and filtered by colour; the offline identity layer scores each run every 3 minutes against an anchor pool (weight 0.6) and a temporal pool (0.4), assigns jointly with hysteresis, holds and flags or relabels backward, and applies closed-pen rules or leaves '?'. Outputs: a per-calf record, human review of flagged runs, and evaluation in calf-minutes."></p>
+<p align="center"><sub>The tracker and its re-identification safety net (Fig. 3 of the paper). Top: the tracker stores anonymous mask segments, and refinement repairs fragments. Bottom: the safety net embeds crops every 15 s and every 3 minutes names each run, flags it or leaves it "?". Blue outline: new in this work; grey fill: reused; dashed: human step.</sub></p>
 
 **The tracker follows, but never names.** A SAM 3 video tracker with a backbone distilled for calves ([FarmSAM](https://github.com/Sonam525/FarmSAM)) follows each animal and writes anonymous segments, one mask per animal per frame. A fine-tuned RF-DETR detector re-seeds it when an animal is lost. Inside a segment, identity follows the masks, and appearance never steers the tracker.
 
